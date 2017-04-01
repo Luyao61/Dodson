@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet"  href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'lineup_test_2/style.css' %}" />
+</head>
+<body>
+
+    {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+    {% load static %}
+    <div class="container">
+        <!-- <table style="width:100%"> -->
+        <div class="row">
+            {% for path in lineup_order1 %}
+                {% if path == chosen %}
+                    <img id="chosen" src="{%  static path %}" class="img-responsive image1">
+                {% else %}
+                    <img src="{%  static path %}" class="img-responsive image1">
+                {% endif %}
+            {% endfor %}
+        </div>
+
+        <div class="row">
+            {% for path in lineup_order2 %}
+                {% if path == chosen %}
+                    <img id="chosen" src="{%  static path %}" class="img-responsive image1">
+                {% else %}
+                    <img src="{%  static path %}" class="img-responsive image1">
+                {% endif %}
+            {% endfor %}
+        </div>
+    <!--</center>-->
+    </div>
+    <div class="container">
+        <h1>{{ statement }}</h1>
+    </div>
+
+    <br>
+
+{#    <div class="container">#}
+{#        <div class="row">#}
+{#            <button class = "btn btn-primary btn-lg" style="width:33%;" type="button" >60</button>#}
+{#            <button class = "btn btn-primary btn-lg" style="width:33%;" type="button" >80</button>#}
+{#            <button class = "btn btn-primary btn-lg" style="width:33%;" type="button" >100</button>#}
+{#        </div>#}
+{#    </div>#}
+    <br>
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                <form action="{% url 'lineup_test_2:record_answer' uid category 60 %}">
+                    <input type="submit" class="btn btn-primary btn-lg" style="width:100%" value="60"/>
+                </form>
+            </div>
+            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                <form action="{% url 'lineup_test_2:record_answer' uid category 80 %}">
+                    <input type="submit" class="btn btn-primary btn-lg" style="width:100%" value="80"/>
+                </form>
+            </div>
+            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                <form action="{% url 'lineup_test_2:record_answer' uid category 100 %}">
+                    <input type="submit" class="btn btn-primary btn-lg" style="width:100%" value="100"/>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

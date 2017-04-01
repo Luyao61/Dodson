@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Test Directory</title>
+</head>
+<body>
+    {% if category_list %}
+        <ul>
+        {% for category in category_list %}
+{#            <li><a href="{% url 'polls:detail' question.id %}">{{ question.question_text }}</a></li>#}
+            <li><a href="{% url 'lineup_test_2:generate_question' uid category.category %}">{{ category.category }}</a></li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>No category are available.</p>
+    {% endif %}
+</body>
+</html>

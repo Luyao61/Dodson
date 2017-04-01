@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet"  href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+    <title>Welcome Page</title>
+</head>
+<body>
+    <div class="jumbotron text-center" style="background-color: inherit">
+        <h1>Welcome!</h1>
+        <p> some message here </p>
+        <form action="{% url 'lineup_test_2:create_new_user' %}">
+            <input type="submit" value="START"  class = "btn btn-primary btn-lg"/>
+        </form>
+    </div>
+</body>
+</html>
