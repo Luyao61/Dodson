@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet"  href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+    <title>Instruction</title>
+</head>
+<body>
+    <div class="container">
+        <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8 col-xs-offset-2 col-sm-offset-2 col-md-offset-2 col-lg-offset-2">
+            <div class="page-header">
+                <h1>
+                    Instruction
+                </h1>
+            </div>
+            <p class="lead">
+                Pretend you are a police officer. You will see several lineups of faces.
+                In each lineup, an eyewitness has identified a face as the suspect.
+                The chosen face is highlighted in <strong style="color: red;">red</strong>.
+                You also will see the eyewitness’s written expression of certainty about their decision.
+            </p>
+
+            <p class="lead">
+                Your task is to translate the written expression onto a numeric confidence scale.
+                Before beginning the task, you will be shown an example involving a yellow smiley face
+                that was definitely seen before by the eyewitness.
+            </p>
+
+            <form action="{% url '' %}">
+                <input type="submit" value="I Agree to Continue"  class="btn btn-primary btn-lg center-block"/>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

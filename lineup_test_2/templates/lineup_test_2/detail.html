@@ -35,38 +35,42 @@
         </div>
     <!--</center>-->
     </div>
-    <div class="container">
-        <h1>{{ statement }}</h1>
+    <div class="container text-center">
+        <h1 style="background-color: lightgoldenrodyellow; color: red">{{ statement }}</h1>
     </div>
 
     <br>
 
-{#    <div class="container">#}
-{#        <div class="row">#}
-{#            <button class = "btn btn-primary btn-lg" style="width:33%;" type="button" >60</button>#}
-{#            <button class = "btn btn-primary btn-lg" style="width:33%;" type="button" >80</button>#}
-{#            <button class = "btn btn-primary btn-lg" style="width:33%;" type="button" >100</button>#}
-{#        </div>#}
-{#    </div>#}
     <br>
     <div class="container">
+        <div class="row text-center">
+            <p class="lead">
+                <b>Translate the written expression of certainty above onto the following numeric scale:</b>
+                <br>
+                Note: 60% means less certain; 100% means very certain
+            </p>
+        </div>
         <div class="row">
             <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                 <form action="{% url 'lineup_test_2:record_answer' uid category 60 %}">
-                    <input type="submit" class="btn btn-primary btn-lg" style="width:100%" value="60"/>
+                    <input type="submit" class="btn btn-primary btn-lg" style="width:100%" value="60%"/>
                 </form>
             </div>
             <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                 <form action="{% url 'lineup_test_2:record_answer' uid category 80 %}">
-                    <input type="submit" class="btn btn-primary btn-lg" style="width:100%" value="80"/>
+                    <input type="submit" class="btn btn-primary btn-lg" style="width:100%" value="80%"/>
                 </form>
             </div>
             <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                 <form action="{% url 'lineup_test_2:record_answer' uid category 100 %}">
-                    <input type="submit" class="btn btn-primary btn-lg" style="width:100%" value="100"/>
+                    <input type="submit" class="btn btn-primary btn-lg" style="width:100%" value="100%"/>
                 </form>
             </div>
         </div>
     </div>
+    <br>
+    <br>
+    <br>
+    <br>
 </body>
 </html>

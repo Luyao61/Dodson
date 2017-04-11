@@ -7,12 +7,40 @@
     <title>Welcome Page</title>
 </head>
 <body>
-    <div class="jumbotron text-center" style="background-color: inherit">
-        <h1>Welcome!</h1>
-        <p> some message here </p>
-        <form action="{% url 'lineup_test_2:create_new_user' %}">
-            <input type="submit" value="START"  class = "btn btn-primary btn-lg"/>
-        </form>
+    <!-- Begin page content -->
+    <div class="jumbotron text-center">
+        <h1>Dodson Cognition Lab</h1>
+        <p>Welcome to take this memory test</p>
+    </div>
+    <div class="container">
+        <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8 col-xs-offset-2 col-sm-offset-2 col-md-offset-2 col-lg-offset-2">
+            <div class="page-header">
+                <h1>
+                    About This Test
+                </h1>
+            </div>
+
+            <p class="lead">
+                You are invited to participate in a research study about memory.
+                The survey is being conducted by Chad Dodson, PhD, from the Department of Psychology at the University of Virginia.
+                The survey should take 5 minutes to complete. Your responses will be kept confidential.
+                You may drop out of the study at any time by closing this browser window.
+            </p>
+            <br>
+            <p><b>Please read the following consent agreement before continuing:</b></p>
+
+            {% load static %}
+            <iframe src={% static "consent_agreement.html"%} width="100%"></iframe>
+            <br>
+            <br>
+            <form action="{% url 'lineup_test_2:create_new_user' %}">
+                <input type="submit" value="I Agree to Continue"  class="btn btn-primary btn-lg center-block"/>
+            </form>
+            <br>
+            <br>
+            <br>
+            <br>
+        </div>
     </div>
 </body>
 </html>

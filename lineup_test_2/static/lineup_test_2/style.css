@@ -6,3 +6,7 @@ img {
 }
 #chosen {border: 5px solid red;}
 
+mark {
+    background-color: lightgoldenrodyellow;
+    color: red;
+}
