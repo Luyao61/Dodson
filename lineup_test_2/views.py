@@ -19,22 +19,52 @@ def create_new_user(request):
     while Users.objects.filter(pk=uid).exists():
         uid = uuid.uuid4().hex[:14].upper()
 
-    new_user = Users(userId=uid)
+    if random.randint(1,2) == 1:
+        new_user = Users(userId=uid, StatementType=True)
+    else:
+        new_user = Users(userId=uid, StatementType=False)
+
     new_user.save()
 
-    return HttpResponseRedirect(reverse('lineup_test_2:test_dir', args=(uid,)))
+    # return HttpResponseRedirect(reverse('lineup_test_2:test_dir', args=(uid,)))
+    return HttpResponseRedirect(reverse('lineup_test_2:instruction', args=(uid, 1)))
 
 
 def test_dir(request, uid):
     category_list = EyewitnessStimuli.objects.values('category').distinct()
     context = {
         'uid': uid,
-        'category_list': category_list,
     }
-    return render(request, 'lineup_test_2/test_dir.html', context)
+
+    user = get_object_or_404(Users, pk=uid)
+
+    count = 0
+    finished = True
+    for cate in ["O1", "Omany", "R"]:
+        q_set = user.response_set.filter(category=cate)
+        if len(q_set) == 0:
+            finished = False
+            break
+
+        q_set = user.response_set.filter(category=cate).filter(answer__isnull=True)
+        # print(len(q_set))
+        count += len(q_set)
+
+    # print(count)
+    if finished and count == 0:
+        context = generate_survey_content(context)
+        return render(request, 'lineup_test_2/survey.html', context)
+    else:
+        context['category_list'] = category_list
+        return render(request, 'lineup_test_2/test_dir.html', context)
 
 
 def generate_question(request, uid, category):
+    user = get_object_or_404(Users, pk=uid)
+    q_set = user.response_set.filter(category=category)
+    if len(q_set) != 0:
+        return HttpResponseRedirect(reverse('lineup_test_2:detail', args=(uid, category,)))
+
     chosen_set = []     # track lineup_number that has been used
     score_set = [60,80,100]
     race_set = ['W', 'B']
@@ -67,8 +97,15 @@ def detail(request, uid, category):
     q_num = len(q_set)
     print(q_num)
 
+    statement_type = user.StatementType
+
     if q_num == 6:
-        return render(request, 'lineup_test_2/thankyou.html', context={'uid': uid})
+        context = {
+            'uid': uid,
+            'mode': 3,
+        }
+        # return render(request, 'lineup_test_2/instruction.html', context)
+        return HttpResponseRedirect(reverse('lineup_test_2:instruction', args=(uid, 3)))
     else:
         response = Response.objects.filter(user=user)[q_num]
         sample_q = response.question
@@ -88,7 +125,12 @@ def detail(request, uid, category):
                 chosen_face = file_path + image_num + '.jpg'
 
             img_set_path.append(file_path + image_num + '.jpg')
-        stmt = sample_q.statement
+
+        if statement_type:
+            stmt = sample_q.statement
+        else:
+            stmt = sample_q.statementOnly
+
         chosen_face = file_path + '5.jpg'
 
         context = {
@@ -116,3 +158,45 @@ def record_answer(request, uid, category, a):
     response.save()
 
     return HttpResponseRedirect(reverse('lineup_test_2:detail', args=(uid, category)))
+
+
+def instruction(request, uid, mode):
+    print (mode)
+    context = {
+        'mode': mode,
+        'uid': uid,
+    }
+    return render(request, 'lineup_test_2/instruction.html', context)
+
+
+def example(request, uid):
+    return render(request, 'lineup_test_2/example.html', context={'uid':uid})
+
+
+def submit_survey(request, uid):
+    # print(request)
+    # print(request.POST.get("sex"))
+    # print(request.POST.get("birthyear"))
+    # print(request.POST.get("device"))
+    # print(request.POST.get("race"))
+
+    user = get_object_or_404(Users, pk=uid)
+    user.sex = request.POST.get("sex")
+    user.birth_year = request.POST.get("birthyear")
+    user.device = request.POST.get("device")
+    user.race = request.POST.get("race")
+    user.comments = request.POST.get("comment")
+    user.save()
+
+    return HttpResponse("Thank you for participating this survey!\n You may now close your browser.")
+
+def generate_survey_content(context):
+    b_year = [i for i in range(1900,2018)]
+    b_year.reverse()
+    race = ['Whte/Caucasian', 'Black/African-American', 'Hispanic', 'Asian/Pacific Islander', 'Other']
+    device = ['desktop', 'laptop', 'iphone/smartphone', 'ipad/tablet']
+    context['year_list'] = b_year
+    context['race_list'] = race
+    context['device_list'] = device
+
+    return context

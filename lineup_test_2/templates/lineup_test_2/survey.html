@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Thank you</title>
+
+    <link rel="stylesheet"  href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+</head>
+<body>
+    <div class="container">
+        <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 col-md-offset-2 col-lg-offset-2">
+            <div class="page-header">
+                <h1>
+                    Thank you
+                </h1>
+            </div>
+            <p class="lead">We'd be grateful if you answered the following questions:</p>
+
+            <form action="{% url 'lineup_test_2:submit_survey' uid %}" method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="sex">Sex?</label>
+                    <select class="form-control" id="sex" name="sex">
+                        <option selected disabled>Choose here</option>
+                        <option>Male</option>
+                        <option>Female</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="birthyear">In what year were you born?</label>
+                    <select class="form-control" id="birthyear" name="birthyear">
+                        <option selected disabled>Choose here</option>
+                        {% for year in year_list %}
+                            <option>{{ year }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="race">What is your race? </label>
+                    <select class="form-control" id="race" name="race">
+                        <option selected disabled>Choose here</option>
+                        {% for race in race_list %}
+                            <option>{{ race }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="device">What type of device are you using to take the survey?</label>
+                    <select class="form-control" id="device" name="device">
+                        <option selected disabled>Choose here</option>
+                        {% for device in device_list %}
+                            <option>{{ device }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="comment">
+                        Do you have any comments about this survey, such as any technical issues or ways we can improve it?
+                    </label>
+                    <textarea class="form-control" rows="5" id="comment" name="comment"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <input type="submit" value="Submit"  class="btn btn-primary btn-lg center-block"/>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

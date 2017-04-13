@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Test</title>
+    <title>Example</title>
     <link rel="stylesheet"  href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'lineup_test_2/style.css' %}" />
@@ -13,30 +13,28 @@
 
     {% load static %}
     <div class="container">
+        <div class="page-header">
+            <h1>
+                This is an example of the Test
+            </h1>
+        </div>
+
         <!-- <table style="width:100%"> -->
         <div class="row">
-            {% for path in lineup_order1 %}
-                {% if path == chosen %}
-                    <img id="chosen" src="{%  static path %}" class="img-responsive image1">
-                {% else %}
-                    <img src="{%  static path %}" class="img-responsive image1">
-                {% endif %}
-            {% endfor %}
+            <img src="/static/lineup_test_2/lineups/smiley/1.jpg" class="img-responsive image1">
+            <img src="/static/lineup_test_2/lineups/smiley/2.jpg" class="img-responsive image1">
+            <img src="/static/lineup_test_2/lineups/smiley/3.jpg" class="img-responsive image1">
         </div>
 
         <div class="row">
-            {% for path in lineup_order2 %}
-                {% if path == chosen %}
-                    <img id="chosen" src="{%  static path %}" class="img-responsive image1">
-                {% else %}
-                    <img src="{%  static path %}" class="img-responsive image1">
-                {% endif %}
-            {% endfor %}
+            <img src="/static/lineup_test_2/lineups/smiley/4.jpg" class="img-responsive image1">
+            <img id="chosen" src="/static/lineup_test_2/lineups/smiley/5.jpg" class="img-responsive image1">
+            <img src="/static/lineup_test_2/lineups/smiley/6.jpg" class="img-responsive image1">
         </div>
     <!--</center>-->
     </div>
     <div class="container text-center">
-        <h1 style="background-color: lightgoldenrodyellow; color: red">{{ statement }}</h1>
+        <h1 style="background-color: lightgoldenrodyellow; color: red">I am completely certain this was the smiley face I saw earlier.</h1>
     </div>
 
     <br>
@@ -56,24 +54,32 @@
             </div>
             <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
                 <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                    <form action="{% url 'lineup_test_2:record_answer' uid category 60 %}">
-                        <input type="submit" class="btn btn-primary btn-lg" style="width:100%" value="60%"/>
+                    <form>
+                        <input type="button" class="btn btn-primary btn-lg disabled" style="width:100%" value="60%"/>
                     </form>
                 </div>
                 <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                    <form action="{% url 'lineup_test_2:record_answer' uid category 80 %}">
-                        <input type="submit" class="btn btn-primary btn-lg" style="width:100%" value="80%"/>
+                    <form>
+                        <input type="button" class="btn btn-primary btn-lg disabled" style="width:100%" value="80%"/>
                     </form>
                 </div>
                 <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                    <form action="{% url 'lineup_test_2:record_answer' uid category 100 %}">
-                        <input type="submit" class="btn btn-primary btn-lg" style="width:100%" value="100%"/>
+                    <form>
+                        <input type="button" class="btn btn-primary btn-lg disabled" style="width:100%" value="100%"/>
                     </form>
                 </div>
             </div>
             <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 text-center">
                 <p class="lead"> Completely Certain</p>
             </div>
+        </div>
+
+        <br>
+
+        <div class="row">
+            <form action="{% url 'lineup_test_2:instruction' uid 2 %}">
+                <input type="submit" value="Continue"  class="btn btn-primary btn-lg center-block"/>
+            </form>
         </div>
     </div>
     <br>

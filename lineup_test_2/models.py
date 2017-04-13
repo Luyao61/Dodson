@@ -17,7 +17,8 @@ class EyewitnessStimuli(models.Model):
     lineup_race = models.CharField(max_length=1, choices=LINEUP_RACE)
     lineup_number = models.CharField(max_length=2, choices=LINEUP_NUMBER)
     category = models.CharField(max_length=10, choices=CATEGORY)
-    statement = models.TextField(max_length=100)
+    statement = models.TextField(max_length=100)    # confidence statement and justification
+    statementOnly = models.TextField(max_length=100)    # confidence statement only
     chosen_face = models.IntegerField(choices=CHOICE)
     lineup_order = models.CharField(max_length=14)
 
@@ -26,7 +27,18 @@ class EyewitnessStimuli(models.Model):
 
 
 class Users(models.Model):
+    SEX = (('M', 'Male'), ('F', 'Female'))
     userId = models.CharField(max_length=14, primary_key=True)
+
+    # This if StatementType = true, user will see full statement (confidence statement and justification)
+    # This if StatementType = false, user will see statement only
+    StatementType = models.BooleanField()
+
+    sex = models.CharField(max_length=1, choices=SEX, null=True)
+    birth_year = models.IntegerField(null=True)
+    race = models.CharField(max_length=10, null=True)
+    device = models.CharField(max_length=10, null=True)
+    comments = models.CharField(max_length=100, null=True)
 
     def __str__(self):
         return self.userId

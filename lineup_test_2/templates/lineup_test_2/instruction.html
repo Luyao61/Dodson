@@ -8,28 +8,44 @@
 </head>
 <body>
     <div class="container">
-        <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8 col-xs-offset-2 col-sm-offset-2 col-md-offset-2 col-lg-offset-2">
+        <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 col-md-offset-2 col-lg-offset-2">
             <div class="page-header">
                 <h1>
                     Instruction
                 </h1>
             </div>
-            <p class="lead">
-                Pretend you are a police officer. You will see several lineups of faces.
-                In each lineup, an eyewitness has identified a face as the suspect.
-                The chosen face is highlighted in <strong style="color: red;">red</strong>.
-                You also will see the eyewitness’s written expression of certainty about their decision.
-            </p>
+            {% if mode == '1' %}
+                <p class="lead">
+                    Pretend you are a police officer. You will see several lineups of faces.
+                    In each lineup, an eyewitness has identified a face as the suspect.
+                    The chosen face is highlighted in <strong style="color: red;">red</strong>.
+                    You also will see the eyewitness’s written expression of certainty about their decision.
+                </p>
 
-            <p class="lead">
-                Your task is to translate the written expression onto a numeric confidence scale.
-                Before beginning the task, you will be shown an example involving a yellow smiley face
-                that was definitely seen before by the eyewitness.
-            </p>
+                <p class="lead">
+                    Your task is to translate the written expression onto a numeric confidence scale.
+                    Before beginning the task, you will be shown an example involving a yellow smiley face
+                    that was definitely seen before by the eyewitness.
+                </p>
 
-            <form action="{% url '' %}">
-                <input type="submit" value="I Agree to Continue"  class="btn btn-primary btn-lg center-block"/>
-            </form>
+                <form action="{% url 'lineup_test_2:example' uid %}">
+                    <input type="submit" value="I Agree to Continue"  class="btn btn-primary btn-lg center-block"/>
+                </form>
+            {% elif mode == '2' %}
+                <p class="lead">
+                    You will now proceed to the real lineups.
+                </p>
+                <form action="{% url 'lineup_test_2:test_dir' uid %}">
+                    <input type="submit" value="Continue"  class="btn btn-primary btn-lg center-block"/>
+                </form>
+            {% elif mode == '3' %}
+                <p class="lead">
+                    You have finished with this portion of the survey.
+                </p>
+                <form action="{% url 'lineup_test_2:test_dir' uid %}">
+                    <input type="submit" value="Continue"  class="btn btn-primary btn-lg center-block"/>
+                </form>
+            {% endif %}
         </div>
     </div>
 </body>
