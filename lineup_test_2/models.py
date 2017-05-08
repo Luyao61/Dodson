@@ -45,7 +45,7 @@ class Users(models.Model):
 
 
 class Response(models.Model):
-    CONFIDENCE_SCORE = ( (60, 60), (80, 80), (100, 100), )
+    CONFIDENCE_SCORE = ( (0, 0), (20, 20), (40, 40), (60, 60), (80, 80), (100, 100), )
     CATEGORY = (('O1', 'O1'), ('Omany', 'Omany'), ('R', 'R'), ('U1', 'U1'), ('F', 'F'), )
 
     user = models.ForeignKey(Users, on_delete=models.CASCADE)

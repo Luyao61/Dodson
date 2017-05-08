@@ -95,7 +95,7 @@ def detail(request, uid, category):
     user = get_object_or_404(Users, pk=uid)
     q_set = user.response_set.filter(category=category).exclude(answer__isnull=True)
     q_num = len(q_set)
-    print(q_num)
+    # print(q_num)
 
     statement_type = user.StatementType
 
