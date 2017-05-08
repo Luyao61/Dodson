@@ -26,12 +26,18 @@ class EyewitnessStimuli(models.Model):
         return self.category + "; " + self.lineup_number+"; "+ self.statement
 
 
-class Users(models.Model):
+class User(models.Model):
     SEX = (('M', 'Male'), ('F', 'Female'))
     userId = models.CharField(max_length=14, primary_key=True)
+    CATEGORY = (('O1', 'O1'), ('Omany', 'Omany'), ('R', 'R'), ('U1', 'U1'), ('F', 'F'), )
 
-    # This if StatementType = true, user will see full statement (confidence statement and justification)
-    # This if StatementType = false, user will see statement only
+    # This field represent which lineup he will see.
+    category = models.CharField(max_length=10, choices=CATEGORY)
+    '''
+    This field represent whether this user will see the statement and justification or statement only.
+    if StatementType = true, user will see full statement (confidence statement and justification)
+    if StatementType = false, user will see statement only
+    '''
     StatementType = models.BooleanField()
 
     sex = models.CharField(max_length=1, choices=SEX, null=True)
@@ -46,13 +52,12 @@ class Users(models.Model):
 
 class Response(models.Model):
     CONFIDENCE_SCORE = ( (0, 0), (20, 20), (40, 40), (60, 60), (80, 80), (100, 100), )
-    CATEGORY = (('O1', 'O1'), ('Omany', 'Omany'), ('R', 'R'), ('U1', 'U1'), ('F', 'F'), )
 
-    user = models.ForeignKey(Users, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     question = models.ForeignKey(EyewitnessStimuli, on_delete=models.CASCADE)
     answer = models.IntegerField(choices=CONFIDENCE_SCORE, null=True)
 
-    category = models.CharField(max_length=10, choices=CATEGORY)
+    # category = models.CharField(max_length=10, choices=CATEGORY)
 
     def __str__(self):
         return self.user.userId

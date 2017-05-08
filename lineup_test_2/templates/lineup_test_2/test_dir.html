@@ -18,8 +18,8 @@
 
             {% if category_list %}
                 {% for category in category_list %}
-                        <form action="{% url 'lineup_test_2:generate_question' uid category.category %}">
-                            <input type="submit" value={{ category.category }}  class="btn btn-lg btn-default btn-block"/>
+                        <form action="{% url 'lineup_test_2:generate_question' uid category %}">
+                            <input type="submit" value={{ category }}  class="btn btn-lg btn-default btn-block"/>
                         </form>
                     <br>
                 {% endfor %}

@@ -5,7 +5,7 @@ from django.template import loader
 from django.urls import reverse
 from django.views import generic
 import uuid
-from lineup_test_2.models import Users, EyewitnessStimuli, Response
+from lineup_test_2.models import User, EyewitnessStimuli, Response
 
 
 # Create your views here.
@@ -15,14 +15,17 @@ def index(request):
 
 
 def create_new_user(request):
+    category_list = ['O1', 'Omany', 'R', 'U1', 'F']
     uid = uuid.uuid4().hex[:14].upper()
-    while Users.objects.filter(pk=uid).exists():
+    while User.objects.filter(pk=uid).exists():
         uid = uuid.uuid4().hex[:14].upper()
 
+    random_category = random.choice(category_list)
+
     if random.randint(1,2) == 1:
-        new_user = Users(userId=uid, StatementType=True)
+        new_user = User(userId=uid, StatementType=True, category=random_category)
     else:
-        new_user = Users(userId=uid, StatementType=False)
+        new_user = User(userId=uid, StatementType=False, category=random_category)
 
     new_user.save()
 
@@ -31,22 +34,29 @@ def create_new_user(request):
 
 
 def test_dir(request, uid):
-    category_list = EyewitnessStimuli.objects.values('category').distinct()
+    user = get_object_or_404(User, pk=uid)
+
+    # removed by lz, on 08/08
+    # category_list = EyewitnessStimuli.objects.values('category').distinct()
+    lineup_category = [user.category]
+
     context = {
         'uid': uid,
     }
 
-    user = get_object_or_404(Users, pk=uid)
-
     count = 0
     finished = True
-    for cate in ["O1", "Omany", "R"]:
-        q_set = user.response_set.filter(category=cate)
-        if len(q_set) == 0:
+    # removed by lz, on 08/08
+    # for cate in ["O1", "Omany", "R"]:
+    for cate in lineup_category:
+        # q_set = user.response_set.filter(category=cate)
+        q_set = user.response_set.all()
+        if len(q_set) == 0: # test has not been generated yet.
             finished = False
             break
 
-        q_set = user.response_set.filter(category=cate).filter(answer__isnull=True)
+        # q_set = user.response_set.filter(category=cate).filter(answer__isnull=True)
+        q_set = user.response_set.all().filter(answer__isnull=True)
         # print(len(q_set))
         count += len(q_set)
 
@@ -55,12 +65,45 @@ def test_dir(request, uid):
         context = generate_survey_content(context)
         return render(request, 'lineup_test_2/survey.html', context)
     else:
-        context['category_list'] = category_list
+        # removed by lz, on 08/08
+        # context['category_list'] = category_list
+        context['category_list'] = lineup_category
         return render(request, 'lineup_test_2/test_dir.html', context)
 
 
 def generate_question(request, uid, category):
-    user = get_object_or_404(Users, pk=uid)
+    user = get_object_or_404(User, pk=uid)
+    lineup_category = user.category
+    q_set = user.response_set.all()
+    if len(q_set) != 0:
+        return HttpResponseRedirect(reverse('lineup_test_2:detail', args=(uid, category,)))
+    query_set_cate = EyewitnessStimuli.objects.filter(category=lineup_category)
+    race_set = ['W', 'B']
+    question_set = []
+
+    for race in race_set:
+        chosen_set = []  # track lineup_number that has been used
+        query_set = query_set_cate.filter(lineup_race=race)
+        if len(query_set) == 3:
+            for q in query_set:
+                question_set.append(q)
+        else:
+            for _ in range(3):
+                for n in chosen_set:
+                    query_set = query_set.exclude(lineup_number=n)
+                q = random.choice(query_set)
+                question_set.append(q)
+                chosen_set.append(q.lineup_number)
+
+    order = [0, 1, 2, 3, 4, 5]
+    random.shuffle(order)
+    user = User(userId=uid)
+
+    for n in order:
+        response = Response(user=user, question=question_set[n])
+        response.save()
+    '''
+    user = get_object_or_404(User, pk=uid)
     q_set = user.response_set.filter(category=category)
     if len(q_set) != 0:
         return HttpResponseRedirect(reverse('lineup_test_2:detail', args=(uid, category,)))
@@ -84,16 +127,20 @@ def generate_question(request, uid, category):
 
     order = [0,1,2,3,4,5]
     random.shuffle(order)
-    user = Users(userId=uid)
+    user = User(userId=uid)
     for n in order:
         response = Response(user=user, question=question_set[n], category=category)
         response.save()
     return HttpResponseRedirect(reverse('lineup_test_2:detail', args=(uid, category,)))
+    '''
+    return HttpResponseRedirect(reverse('lineup_test_2:detail', args=(uid, category,)))
 
 
 def detail(request, uid, category):
-    user = get_object_or_404(Users, pk=uid)
-    q_set = user.response_set.filter(category=category).exclude(answer__isnull=True)
+    user = get_object_or_404(User, pk=uid)
+    # q_set = user.response_set.filter(category=category).exclude(answer__isnull=True)
+    q_set = user.response_set.all().exclude(answer__isnull=True)
+
     q_num = len(q_set)
     # print(q_num)
 
@@ -147,13 +194,15 @@ def detail(request, uid, category):
 
 
 def record_answer(request, uid, category, a):
-    ##
-    print(a)
-    user = get_object_or_404(Users, pk=uid)
-    q_set = user.response_set.filter(category=category).exclude(answer__isnull=True)
+
+    # print(a)
+    user = get_object_or_404(User, pk=uid)
+    # q_set = user.response_set.filter(category=category).exclude(answer__isnull=True)
+    q_set = user.response_set.all().exclude(answer__isnull=True)
     q_num = len(q_set)
 
-    response = Response.objects.filter(user=user, category=category)[q_num]
+    # response = Response.objects.filter(user=user, category=category)[q_num]
+    response = Response.objects.filter(user=user)[q_num]
     response.answer = a
     response.save()
 
@@ -161,7 +210,7 @@ def record_answer(request, uid, category, a):
 
 
 def instruction(request, uid, mode):
-    print (mode)
+    # print (mode)
     context = {
         'mode': mode,
         'uid': uid,
@@ -180,7 +229,7 @@ def submit_survey(request, uid):
     # print(request.POST.get("device"))
     # print(request.POST.get("race"))
 
-    user = get_object_or_404(Users, pk=uid)
+    user = get_object_or_404(User, pk=uid)
     user.sex = request.POST.get("sex")
     user.birth_year = request.POST.get("birthyear")
     user.device = request.POST.get("device")
@@ -189,6 +238,7 @@ def submit_survey(request, uid):
     user.save()
 
     return HttpResponse("Thank you for participating this survey!\n You may now close your browser.")
+
 
 def generate_survey_content(context):
     b_year = [i for i in range(1900,2018)]
