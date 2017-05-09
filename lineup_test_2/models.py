@@ -63,5 +63,5 @@ class Response(models.Model):
     # category = models.CharField(max_length=10, choices=CATEGORY)
 
     def __str__(self):
-        return "{uid:}; category: {cate:}; lineup Number: {lineup_num:}; statementOnly: {stmtOnly:}"\
-            .format(uid=self.user.userId, cate=self.question.category, lineup_num=self.question.lineup_number, stmtOnly=self.question.statementOnly)
+        return "{uid:}; Category: {cate:}; Lineup Number: {lineup_num:}; Statement Type: {stmtOnly:}"\
+            .format(uid=self.user.userId, cate=self.question.category, lineup_num=self.question.lineup_number, stmtOnly=self.user.StatementType)
