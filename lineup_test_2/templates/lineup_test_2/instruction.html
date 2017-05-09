@@ -35,7 +35,7 @@
                 <p class="lead">
                     You will now proceed to the real lineups.
                 </p>
-                <form action="{% url 'lineup_test_2:test_dir' uid %}">
+                <form action="{% url 'lineup_test_2:generate_question' uid %}">
                     <input type="submit" value="Continue"  class="btn btn-primary btn-lg center-block"/>
                 </form>
             {% elif mode == '3' %}

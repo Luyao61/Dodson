@@ -45,7 +45,6 @@
             <p class="lead">
                 <b>Translate the written expression of certainty above onto the following numeric scale:</b>
                 <br>
-                Note: 60% means less certain; 100% means very certain
             </p>
         </div>
         <div class="row">
@@ -54,34 +53,34 @@
             </div>
             <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
                 <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-                    <form>
-                        <input type="button" class="btn btn-primary btn-lg disabled" style="width:100%" value="0%"/>
+                    <form action="{% url 'lineup_test_2:record_example' uid 0 %}">
+                        <input type="submit" class="btn btn-primary btn-lg" style="width:100%" value="0%"/>
                     </form>
                 </div>
                 <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-                    <form>
-                        <input type="button" class="btn btn-primary btn-lg disabled" style="width:100%" value="20%"/>
+                    <form action="{% url 'lineup_test_2:record_example' uid 20 %}">
+                        <input type="submit" class="btn btn-primary btn-lg" style="width:100%" value="20%"/>
                     </form>
                 </div>
                 <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-                    <form>
-                        <input type="button" class="btn btn-primary btn-lg disabled" style="width:100%" value="40%"/>
+                    <form action="{% url 'lineup_test_2:record_example' uid 40 %}">
+                        <input type="submit" class="btn btn-primary btn-lg" style="width:100%" value="40%"/>
                     </form>
                 </div>
 
                 <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-                    <form>
-                        <input type="button" class="btn btn-primary btn-lg disabled" style="width:100%" value="60%"/>
+                    <form action="{% url 'lineup_test_2:record_example' uid 60 %}">
+                        <input type="submit" class="btn btn-primary btn-lg" style="width:100%" value="60%"/>
                     </form>
                 </div>
                 <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-                    <form>
-                        <input type="button" class="btn btn-primary btn-lg disabled" style="width:100%" value="80%"/>
+                    <form action="{% url 'lineup_test_2:record_example' uid 80 %}">
+                        <input type="submit" class="btn btn-primary btn-lg" style="width:100%" value="80%"/>
                     </form>
                 </div>
                 <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-                    <form>
-                        <input type="button" class="btn btn-primary btn-lg disabled" style="width:100%" value="100%"/>
+                    <form action="{% url 'lineup_test_2:record_example' uid 100 %}">
+                        <input type="submit" class="btn btn-primary btn-lg" style="width:100%" value="100%"/>
                     </form>
                 </div>
             </div>
@@ -92,11 +91,11 @@
 
         <br>
 
-        <div class="row">
-            <form action="{% url 'lineup_test_2:instruction' uid 2 %}">
-                <input type="submit" value="Continue"  class="btn btn-primary btn-lg center-block"/>
-            </form>
-        </div>
+{#        <div class="row">#}
+{#            <form action="{% url 'lineup_test_2:instruction' uid 2 %}">#}
+{#                <input type="submit" value="Continue"  class="btn btn-primary btn-lg center-block"/>#}
+{#            </form>#}
+{#        </div>#}
     </div>
     <br>
     <br>

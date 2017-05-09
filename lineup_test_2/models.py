@@ -28,6 +28,8 @@ class EyewitnessStimuli(models.Model):
 
 class User(models.Model):
     SEX = (('M', 'Male'), ('F', 'Female'))
+    EX_CONFIDENCE_SCORE = ( (0, 0), (20, 20), (40, 40), (60, 60), (80, 80), (100, 100), )
+
     userId = models.CharField(max_length=14, primary_key=True)
     CATEGORY = (('O1', 'O1'), ('Omany', 'Omany'), ('R', 'R'), ('U1', 'U1'), ('F', 'F'), )
 
@@ -39,6 +41,7 @@ class User(models.Model):
     if StatementType = false, user will see statement only
     '''
     StatementType = models.BooleanField()
+    example_response = models.IntegerField(choices=EX_CONFIDENCE_SCORE, null=True)
 
     sex = models.CharField(max_length=1, choices=SEX, null=True)
     birth_year = models.IntegerField(null=True)
@@ -60,4 +63,5 @@ class Response(models.Model):
     # category = models.CharField(max_length=10, choices=CATEGORY)
 
     def __str__(self):
-        return self.user.userId
+        return "{uid:}; category: {cate:}; lineup Number: {lineup_num:}; statementOnly: {stmtOnly:}"\
+            .format(uid=self.user.userId, cate=self.question.category, lineup_num=self.question.lineup_number, stmtOnly=self.question.statementOnly)

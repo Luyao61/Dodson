@@ -34,15 +34,16 @@ def create_new_user(request):
 
 
 def test_dir(request, uid):
+    context = {
+        'uid': uid,
+    }
+    """
     user = get_object_or_404(User, pk=uid)
 
     # removed by lz, on 08/08
     # category_list = EyewitnessStimuli.objects.values('category').distinct()
     lineup_category = [user.category]
 
-    context = {
-        'uid': uid,
-    }
 
     count = 0
     finished = True
@@ -69,14 +70,17 @@ def test_dir(request, uid):
         # context['category_list'] = category_list
         context['category_list'] = lineup_category
         return render(request, 'lineup_test_2/test_dir.html', context)
+    """
+    context = generate_survey_content(context)
+    return render(request, 'lineup_test_2/survey.html', context)
 
 
-def generate_question(request, uid, category):
+def generate_question(request, uid):
     user = get_object_or_404(User, pk=uid)
     lineup_category = user.category
     q_set = user.response_set.all()
     if len(q_set) != 0:
-        return HttpResponseRedirect(reverse('lineup_test_2:detail', args=(uid, category,)))
+        return HttpResponseRedirect(reverse('lineup_test_2:detail', args=(uid, lineup_category,)))
     query_set_cate = EyewitnessStimuli.objects.filter(category=lineup_category)
     race_set = ['W', 'B']
     question_set = []
@@ -133,16 +137,16 @@ def generate_question(request, uid, category):
         response.save()
     return HttpResponseRedirect(reverse('lineup_test_2:detail', args=(uid, category,)))
     '''
-    return HttpResponseRedirect(reverse('lineup_test_2:detail', args=(uid, category,)))
+    return HttpResponseRedirect(reverse('lineup_test_2:detail', args=(uid, lineup_category,)))
 
 
 def detail(request, uid, category):
     user = get_object_or_404(User, pk=uid)
-    # q_set = user.response_set.filter(category=category).exclude(answer__isnull=True)
+    # q_set = user.response_set.filter(category=user.category).exclude(answer__isnull=True)
     q_set = user.response_set.all().exclude(answer__isnull=True)
 
     q_num = len(q_set)
-    # print(q_num)
+    print(q_num)
 
     statement_type = user.StatementType
 
@@ -250,3 +254,11 @@ def generate_survey_content(context):
     context['device_list'] = device
 
     return context
+
+
+def record_example(request, uid, a):
+    user = get_object_or_404(User, pk=uid)
+    user.example_response = a
+    user.save()
+
+    return HttpResponseRedirect(reverse('lineup_test_2:instruction', args=(uid, 2)))
