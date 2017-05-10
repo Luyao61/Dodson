@@ -61,7 +61,28 @@ class Response(models.Model):
     answer = models.IntegerField(choices=CONFIDENCE_SCORE, null=True)
 
     # category = models.CharField(max_length=10, choices=CATEGORY)
+    def user_id(self):
+        return self.user.userId
+
+    def question_category(self):
+        return self.question.category
+    question_category.short_description = 'category'
+
+    def question_lineup_number(self):
+        return self.question.lineup_number
+    question_lineup_number.short_description = 'lineup_number'
+
+    def statement_type(self):
+        return self.user.StatementType
+    statement_type.boolean = True
+
+    def statement(self):
+        if self.user.StatementType:
+            return self.question.statement
+        else:
+            return self.question.statementOnly
 
     def __str__(self):
         return "{uid:}; Category: {cate:}; Lineup Number: {lineup_num:}; Statement Type: {stmtOnly:}"\
             .format(uid=self.user.userId, cate=self.question.category, lineup_num=self.question.lineup_number, stmtOnly=self.user.StatementType)
+
