@@ -64,6 +64,9 @@ class Response(models.Model):
     def user_id(self):
         return self.user.userId
 
+    def example_answer(self):
+        return self.user.example_response
+
     def question_category(self):
         return self.question.category
     question_category.short_description = 'category'

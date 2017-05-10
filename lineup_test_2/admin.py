@@ -3,7 +3,7 @@ from .models import User, EyewitnessStimuli, Response
 
 
 class ResponseAdmin(admin.ModelAdmin):
-    list_display = ('user_id', 'question_category', 'question_lineup_number', 'statement_type',
+    list_display = ('user_id', 'example_answer', 'question_category', 'question_lineup_number', 'statement_type',
                     'statement', 'answer')
     actions = ['download_csv']
     # actions = ['download_csv']
@@ -19,9 +19,9 @@ class ResponseAdmin(admin.ModelAdmin):
 
         f = StringIO()
         writer = csv.writer(f)
-        writer.writerow(["userid", "category", "lineup_number", "statement_type", "statement", "answer"])
+        writer.writerow(["userid", "example_answer", "category", "lineup_number", "statement_type", "statement", "answer"])
         for s in queryset:
-            writer.writerow([s.user.userId, s.question.category, s.question.lineup_number, s.user.StatementType,
+            writer.writerow([s.user.userId, s.user.example_response, s.question.category, s.question.lineup_number, s.user.StatementType,
                             s.question.statement if s.user.StatementType else s.question.statementOnly, s.answer])
         f.seek(0)
         response = HttpResponse(f, content_type='text/csv')
