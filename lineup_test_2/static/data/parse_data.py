@@ -8,6 +8,3 @@ for line1 in data:
                            category=line1[4], statement=line1[5], statementOnly=line1[6],
                            chosen_face=line1[7].astype(np.int), lineup_order=line1[8])
     q1.save()
-
-q = EyewitnessStimuli(score=100, lineup_race='W', lineup_number='W1', category='Ex', chosen_face=1, lineup_order="1;2;3;4;5;6", statement='smiley face example', statementOnly='example')
-q.save()
