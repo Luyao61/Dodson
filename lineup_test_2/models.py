@@ -89,3 +89,12 @@ class Response(models.Model):
         return "{uid:}; Category: {cate:}; Lineup Number: {lineup_num:}; Statement Type: {stmtOnly:}"\
             .format(uid=self.user.userId, cate=self.question.category, lineup_num=self.question.lineup_number, stmtOnly=self.user.StatementType)
 
+
+class SecretCode(models.Model):
+    code = models.CharField(max_length=14)
+    valid = models.BooleanField(default=False)
+
+    def validity(self):
+        return self.valid
+    validity.short_description = 'Valid?'
+    validity.boolean = True

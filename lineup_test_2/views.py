@@ -5,7 +5,7 @@ from django.template import loader
 from django.urls import reverse
 from django.views import generic
 import uuid
-from lineup_test_2.models import User, EyewitnessStimuli, Response
+from lineup_test_2.models import User, EyewitnessStimuli, Response, SecretCode
 
 
 # Create your views here.
@@ -241,7 +241,13 @@ def submit_survey(request, uid):
     user.comments = request.POST.get("comment")
     user.save()
 
-    return HttpResponse("Thank you for participating this survey!\n You may now close your browser.")
+    codes = SecretCode.objects.filter(valid=True)
+    if len(codes) >= 1:
+        code = random.choice(codes).code
+    else:
+        code = None
+    # return HttpResponse("Thank you for participating this survey!\n You may now close your browser.")
+    return render(request, 'lineup_test_2/final_page.html', context={'code':code})
 
 
 def generate_survey_content(context):

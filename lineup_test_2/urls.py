@@ -20,4 +20,7 @@ urlpatterns = [
     url(r'^record_ex/(?P<uid>([A-Z]|[0-9]){14})/(?P<a>(0|20|40|60|80|100))/$',
         views.record_example, name='record_example'),
 
+    # url(r'^final_page/(?P<uid>([A-Z]|[0-9]){14})/$',
+    #     views.record_example, name='record_example'),
+
 ]

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import User, EyewitnessStimuli, Response
+from .models import User, EyewitnessStimuli, Response, SecretCode
 
 
 class ResponseAdmin(admin.ModelAdmin):
@@ -28,7 +28,22 @@ class ResponseAdmin(admin.ModelAdmin):
         response['Content-Disposition'] = 'attachment; filename=response.csv'
         return response
 
+
+class SecretCodeAdmin(admin.ModelAdmin):
+    list_display = ('code', 'validity')
+    actions = ['mark_as_valid', 'mark_as_invalid']
+
+    @staticmethod
+    def mark_as_valid(self, request, queryset):
+        queryset.update(valid=True)
+
+    @staticmethod
+    def mark_as_invalid(self, request, queryset):
+        queryset.update(valid=False)
+
+
 # Register your models here.
 admin.site.register(EyewitnessStimuli)
 admin.site.register(User)
 admin.site.register(Response, ResponseAdmin)
+admin.site.register(SecretCode, SecretCodeAdmin)
