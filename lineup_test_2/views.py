@@ -146,7 +146,7 @@ def detail(request, uid, category):
     q_set = user.response_set.all().exclude(answer__isnull=True)
 
     q_num = len(q_set)
-    print(q_num)
+    # print(q_num)
 
     statement_type = user.StatementType
 
@@ -238,7 +238,7 @@ def submit_survey(request, uid):
     user.birth_year = request.POST.get("birthyear")
     user.device = request.POST.get("device")
     user.race = request.POST.get("race")
-    user.comments = request.POST.get("comment")
+    user.comments = request.POST.get("comment")[:100]
     user.save()
 
     codes = SecretCode.objects.filter(valid=True)

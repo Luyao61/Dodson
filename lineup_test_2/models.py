@@ -27,7 +27,7 @@ class EyewitnessStimuli(models.Model):
 
 
 class User(models.Model):
-    SEX = (('M', 'Male'), ('F', 'Female'))
+    # SEX = (('M', 'Male'), ('F', 'Female'))
     EX_CONFIDENCE_SCORE = ( (0, 0), (20, 20), (40, 40), (60, 60), (80, 80), (100, 100), )
 
     userId = models.CharField(max_length=14, primary_key=True)
@@ -43,11 +43,22 @@ class User(models.Model):
     StatementType = models.BooleanField()
     example_response = models.IntegerField(choices=EX_CONFIDENCE_SCORE, null=True)
 
-    sex = models.CharField(max_length=1, choices=SEX, null=True)
+    sex = models.CharField(max_length=1, null=True)
     birth_year = models.IntegerField(null=True)
     race = models.CharField(max_length=10, null=True)
     device = models.CharField(max_length=10, null=True)
     comments = models.CharField(max_length=100, null=True)
+
+    def category_func(self):
+        return self.category
+    category_func.short_description = "assigned category"
+
+    def statement_type(self):
+        return self.StatementType
+    statement_type.boolean = True
+
+    def example_answer(self):
+        return self.example_response
 
     def __str__(self):
         return self.userId
