@@ -6,6 +6,7 @@ from django.urls import reverse
 from django.views import generic
 import uuid
 from lineup_test_2.models import User, EyewitnessStimuli, Response, SecretCode
+from Site_Config.models import SiteSetting
 
 
 # Create your views here.
@@ -15,18 +16,36 @@ def index(request):
 
 
 def create_new_user(request):
+    STATEMENT_TYPE = [True, False]
+    CATEGORY = ['O1', 'Omany', 'R', 'U1', 'F']
+    config = SiteSetting.load()
+    limit = config.response_limit
+    threshold = config.manipulation_check_threshold
+
+    choice_dict = {}  # choice dict
+    for c in CATEGORY:
+        for b in STATEMENT_TYPE:
+            q_set = User.objects.filter(category=c, StatementType=b, example_response__gt=threshold) \
+                .exclude(response__answer__isnull=True)
+            if len(q_set) < limit:
+                if c not in choice_dict:
+                    choice_dict[c] = [b]
+                else:
+                    choice_dict[c].append(b)
+    # print(choice_dict)
+    if len(choice_dict) == 0:
+        return HttpResponse("Thank you for participating this survey!\n The survey has ended.")
+
     category_list = ['O1', 'Omany', 'R', 'U1', 'F']
+
     uid = uuid.uuid4().hex[:14].upper()
     while User.objects.filter(pk=uid).exists():
         uid = uuid.uuid4().hex[:14].upper()
 
-    random_category = random.choice(category_list)
+    random_category = random.choice(list(choice_dict.keys()))
+    random_stmt_type = random.choice(choice_dict[random_category])
 
-    if random.randint(1,2) == 1:
-        new_user = User(userId=uid, StatementType=True, category=random_category)
-    else:
-        new_user = User(userId=uid, StatementType=False, category=random_category)
-
+    new_user = User(userId=uid, StatementType=random_stmt_type, category=random_category)
     new_user.save()
 
     # return HttpResponseRedirect(reverse('lineup_test_2:test_dir', args=(uid,)))
