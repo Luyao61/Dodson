@@ -15,10 +15,11 @@ class UserAdmin(admin.ModelAdmin):
 
         f = StringIO()
         writer = csv.writer(f)
-        writer.writerow(["USERID", "ASSIGNED_CATEGORY", "STATEMENT_TYPE", "EXAMPLE_ANSWER", "SEX", "BIRTH_YEAR", "RACE", "DEVICE", "COMMENTS"])
+        writer.writerow(["USERID", "ASSIGNED_CATEGORY", "STATEMENT_TYPE", "EXAMPLE_ANSWER", "SEX", "BIRTH_YEAR", "RACE", "DEVICE", "COMMENTS", "COMPLETED"])
         for s in queryset:
             writer.writerow([s.userId, s.category, s.StatementType, s.example_response, s.sex,
-                s.birth_year, s.race, s.device, s.comments])
+                s.birth_year, s.race, s.device, s.comments,
+                "Yes" if len(s.response_set.filter(answer__isnull=False)) == 6 else "No"])
         f.seek(0)
         response = HttpResponse(f, content_type='text/csv')
         response['Content-Disposition'] = 'attachment; filename=user.csv'
